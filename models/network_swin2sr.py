@@ -931,8 +931,13 @@ class Swin2SR(nn.Module):
         x = (x - self.mean) * self.img_range
 
         if self.upsampler == 'pixelshuffle':
+            print("Performing forward pass!")
+
             # for classical SR
             x = self.conv_first(x)
+
+            print("Shape of x after conv_first:", x.shape)
+
             x = self.conv_after_body(self.forward_features(x)) + x
             x = self.conv_before_upsample(x)
             x = self.conv_last(self.upsample(x))
