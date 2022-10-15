@@ -898,6 +898,8 @@ class Swin2SR(nn.Module):
             x = x + self.absolute_pos_embed
         x = self.pos_drop(x)
 
+        print("Shape of x after patch embeddings:", x.shape)
+
         for layer in self.layers:
             x = layer(x, x_size)
 
