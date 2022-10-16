@@ -957,6 +957,10 @@ class Swin2SR(nn.Module):
             print("Shape of x after conv_first:", x.shape)
 
             x = self.conv_after_body(self.forward_features(x)) + x
+
+            print("Shape of x after conv_after_body:", x.shape)
+            print("First values of x after conv_after_body:", x[0, 0, :3, :3])
+
             x = self.conv_before_upsample(x)
             x = self.conv_last(self.upsample(x))
         elif self.upsampler == 'pixelshuffle_aux':
