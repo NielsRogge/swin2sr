@@ -32,6 +32,7 @@ def main():
         output = model(pixel_values)
 
     print("Shape of output:", output.shape)
+    print("First values of output:", output[0, 0, :3, :3])
 
 
 if __name__ == '__main__':
