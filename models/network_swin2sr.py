@@ -893,8 +893,11 @@ class Swin2SR(nn.Module):
 
     def check_image_size(self, x):
         _, _, h, w = x.size()
+        print("Window size:", self.window_size)
         mod_pad_h = (self.window_size - h % self.window_size) % self.window_size
         mod_pad_w = (self.window_size - w % self.window_size) % self.window_size
+        print("Mod pad h:", mod_pad_h)
+        print("Mod pad w:", mod_pad_w)
         x = F.pad(x, (0, mod_pad_w, 0, mod_pad_h), 'reflect')
         return x
 
