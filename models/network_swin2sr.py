@@ -779,8 +779,8 @@ class Swin2SR(nn.Module):
                          use_checkpoint=use_checkpoint,
                          img_size=img_size,
                          patch_size=patch_size,
-                         resi_connection=resi_connection
-                         stage_index=i_layer
+                         resi_connection=resi_connection,
+                         stage_index=i_layer,
                          )
             self.layers.append(layer)
             
