@@ -393,7 +393,7 @@ class BasicLayer(nn.Module):
     def __init__(self, dim, input_resolution, depth, num_heads, window_size,
                  mlp_ratio=4., qkv_bias=True, drop=0., attn_drop=0.,
                  drop_path=0., norm_layer=nn.LayerNorm, downsample=None, use_checkpoint=False,
-                 pretrained_window_size=0):
+                 pretrained_window_size=0, stage_index=0):
 
         super().__init__()
         self.dim = dim
@@ -420,12 +420,18 @@ class BasicLayer(nn.Module):
         else:
             self.downsample = None
 
+        self.stage_index = stage_index
+
     def forward(self, x, x_size):
         for blk in self.blocks:
+            if self.stage_index == 0:
+                print("Shape of x before block: ", x.shape)
             if self.use_checkpoint:
                 x = checkpoint.checkpoint(blk, x, x_size)
             else:
                 x = blk(x, x_size)
+            if self.stage_index == 0:
+                print("Shape of x after block: ", x.shape)
         if self.downsample is not None:
             x = self.downsample(x)
         return x
@@ -519,7 +525,7 @@ class RSTB(nn.Module):
     def __init__(self, dim, input_resolution, depth, num_heads, window_size,
                  mlp_ratio=4., qkv_bias=True, drop=0., attn_drop=0.,
                  drop_path=0., norm_layer=nn.LayerNorm, downsample=None, use_checkpoint=False,
-                 img_size=224, patch_size=4, resi_connection='1conv'):
+                 img_size=224, patch_size=4, resi_connection='1conv', stage_index=0):
         super(RSTB, self).__init__()
 
         self.dim = dim
@@ -536,7 +542,8 @@ class RSTB(nn.Module):
                                          drop_path=drop_path,
                                          norm_layer=norm_layer,
                                          downsample=downsample,
-                                         use_checkpoint=use_checkpoint)
+                                         use_checkpoint=use_checkpoint,
+                                         stage_index=stage_index)
 
         if resi_connection == '1conv':
             self.conv = nn.Conv2d(dim, dim, 3, 1, 1)
@@ -773,7 +780,7 @@ class Swin2SR(nn.Module):
                          img_size=img_size,
                          patch_size=patch_size,
                          resi_connection=resi_connection
-
+                         stage_index=i_layer
                          )
             self.layers.append(layer)
             
@@ -901,9 +908,11 @@ class Swin2SR(nn.Module):
         print("Shape of x after patch embeddings:", x.shape)
 
         for idx, layer in enumerate(self.layers):
-            print(f"Shape of x before stage {idx}:", x.shape)
+            if idx == 0:
+                print(f"Shape of x before stage {idx}:", x.shape)
             x = layer(x, x_size)
-            print(f"Shape of x after stage {idx}:", x.shape)
+            if idx == 0:
+                print(f"Shape of x after stage {idx}:", x.shape)
 
         x = self.norm(x)  # B L C
         x = self.patch_unembed(x, x_size)
