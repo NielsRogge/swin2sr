@@ -1016,7 +1016,12 @@ class Swin2SR(nn.Module):
             return x_out[:, :, :H*self.upscale, :W*self.upscale], x[:, :, :H*self.upscale, :W*self.upscale], x_hf[:, :, :H*self.upscale, :W*self.upscale]
         
         else:
-            return x[:, :, :H*self.upscale, :W*self.upscale]
+            result = x[:, :, :H*self.upscale, :W*self.upscale]
+            
+            print("Shape of result:", result.shape)
+            print("First values of result:", result[0, 0, :3, :3])
+
+            return result
 
     def flops(self):
         flops = 0
