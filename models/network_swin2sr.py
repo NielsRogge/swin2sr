@@ -900,8 +900,10 @@ class Swin2SR(nn.Module):
 
         print("Shape of x after patch embeddings:", x.shape)
 
-        for layer in self.layers:
+        for idx, layer in enumerate(self.layers):
+            print(f"Shape of x before stage {idx}:", x.shape)
             x = layer(x, x_size)
+            print(f"Shape of x after stage {idx}:", x.shape)
 
         x = self.norm(x)  # B L C
         x = self.patch_unembed(x, x_size)
