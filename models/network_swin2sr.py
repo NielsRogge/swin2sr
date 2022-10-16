@@ -938,7 +938,9 @@ class Swin2SR(nn.Module):
 
     def forward(self, x):
         H, W = x.shape[2:]
+        print("Shape of pixel values before padding:", x.shape)
         x = self.check_image_size(x)
+        print("Shape of pixel values after padding:", x.shape)
 
         self.mean = self.mean.type_as(x)
         x = (x - self.mean) * self.img_range
