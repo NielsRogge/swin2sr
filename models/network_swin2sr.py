@@ -910,9 +910,11 @@ class Swin2SR(nn.Module):
         for idx, layer in enumerate(self.layers):
             if idx == 0:
                 print(f"Shape of x before stage {idx}:", x.shape)
+                print(f"First values of x before stage {idx}:", x[0, :3, :3])
             x = layer(x, x_size)
             if idx == 0:
                 print(f"Shape of x after stage {idx}:", x.shape)
+                print(f"First values of x after stage {idx}:", x[0, :3, :3])
 
         x = self.norm(x)  # B L C
         x = self.patch_unembed(x, x_size)
