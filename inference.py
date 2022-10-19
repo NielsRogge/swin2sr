@@ -67,8 +67,14 @@ def main(checkpoint_url):
     with torch.no_grad():
         output = model(pixel_values)
 
-    print("Shape of output:", output.shape)
-    print("First values of output:", output[0, 0, :3, :3])
+    if isinstance(output, tuple):
+        print("Shape of output:", output[0].shape)
+        print("First values of output:", output[0][0, 0, :3, :3])
+        print("Shape of aux:", output[1].shape)
+        print("First values of aux:", output[1][0, 0, :3, :3])
+    else:
+        print("Shape of output:", output.shape)
+        print("First values of output:", output[0, 0, :3, :3])
 
 
 if __name__ == '__main__':
