@@ -24,6 +24,7 @@ def main(checkpoint_url):
 
     # inference: 
     if "Swin2SR_ClassicalSR_X2_64" in checkpoint_url:
+        print("We are here")
         model = net(upscale=2, in_chans=3, img_size=64, window_size=8,
                             img_range=1., depths=[6, 6, 6, 6, 6, 6], embed_dim=180, num_heads=[6, 6, 6, 6, 6, 6],
                             mlp_ratio=2, upsampler='pixelshuffle', resi_connection='1conv')
@@ -62,6 +63,7 @@ def main(checkpoint_url):
     model.load_state_dict(pretrained_model[param_key_g] if param_key_g in pretrained_model.keys() else pretrained_model, strict=True)
     
     # forward pass
+     model.eval()
     with torch.no_grad():
         output = model(pixel_values)
 
