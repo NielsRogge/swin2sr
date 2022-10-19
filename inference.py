@@ -34,7 +34,7 @@ def main(checkpoint_url):
                             img_range=1., depths=[6, 6, 6, 6, 6, 6], embed_dim=180, num_heads=[6, 6, 6, 6, 6, 6],
                             mlp_ratio=2, upsampler='pixelshuffle', resi_connection='1conv')
         param_key_g = "params"               
-    elif "Swin2SR_CompressedSR_X4_48" in checkpoint_url or "Swin2SR_CompressedSR_X4_DIV2K_Test" in checkpoint_url or "Swin2SR_CompressedSR_X4_DIV2K_Valid" in checkpoint_url:
+    elif "Swin2SR_CompressedSR_X4_48" in checkpoint_url:
         # scale = 4, img_size = 48
         model = net(upscale=4, in_chans=3, img_size=48, window_size=8,
                     img_range=1., depths=[6, 6, 6, 6, 6, 6], embed_dim=180, num_heads=[6, 6, 6, 6, 6, 6],
@@ -61,6 +61,10 @@ def main(checkpoint_url):
     # load weights
     pretrained_model = torch.hub.load_state_dict_from_url(checkpoint_url, map_location="cpu")
     model.load_state_dict(pretrained_model[param_key_g] if param_key_g in pretrained_model.keys() else pretrained_model, strict=True)
+    
+    # update num_chans = 1 for JPEG model
+    if "jpeg" in checkpoint_url:
+        pixel_values = pixel_values[:,0,:,:]
     
     # forward pass
     model.eval()
