@@ -12,7 +12,7 @@ from models.network_swin2sr import Swin2SR as net
 
 def main(checkpoint_url):
     url = 'https://github.com/mv-lab/swin2sr/blob/main/testsets/real-inputs/shanghai.jpg?raw=true'
-    image = Image.open(requests.get(url, stream=True).raw)
+    image = Image.open(requests.get(url, stream=True).raw).convert("RGB")
 
     image_size =  126 if "Jpeg" in checkpoint_url else 256
     transforms = Compose(
@@ -62,7 +62,7 @@ def main(checkpoint_url):
     model.load_state_dict(pretrained_model[param_key_g] if param_key_g in pretrained_model.keys() else pretrained_model, strict=True)
     
     # update num_chans = 1 for JPEG model
-    if "jpeg" in checkpoint_url:
+    if "Jpeg" in checkpoint_url:
         pixel_values = pixel_values[:,0,:,:].unsqueeze(1)
     
     # forward pass
