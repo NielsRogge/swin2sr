@@ -64,7 +64,7 @@ def main(checkpoint_url):
     
     # update num_chans = 1 for JPEG model
     if "jpeg" in checkpoint_url:
-        pixel_values = pixel_values[:,0,:,:]
+        pixel_values = pixel_values[:,0,:,:].unsqueeze(1)
     
     # forward pass
     model.eval()
