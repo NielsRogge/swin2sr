@@ -63,7 +63,7 @@ def main(checkpoint_url):
     model.load_state_dict(pretrained_model[param_key_g] if param_key_g in pretrained_model.keys() else pretrained_model, strict=True)
     
     # forward pass
-     model.eval()
+    model.eval()
     with torch.no_grad():
         output = model(pixel_values)
 
