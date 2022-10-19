@@ -14,11 +14,10 @@ def main(checkpoint_url):
     url = 'https://github.com/mv-lab/swin2sr/blob/main/testsets/real-inputs/shanghai.jpg?raw=true'
     image = Image.open(requests.get(url, stream=True).raw)
 
-    transforms = Compose([
-        Resize((256, 256)),
-        ToTensor(),
-        Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
-    ])
+    image_size =  126 if "Jpeg" in checkpoint_url else 256
+    transforms = Compose(
+        [Resize((image_size, image_size)), ToTensor(), Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])]
+    )
 
     pixel_values = transforms(image).unsqueeze(0)
 
