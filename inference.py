@@ -27,29 +27,29 @@ def main(model_name):
                             img_range=1., depths=[6, 6, 6, 6, 6, 6], embed_dim=180, num_heads=[6, 6, 6, 6, 6, 6],
                             mlp_ratio=2, upsampler='pixelshuffle', resi_connection='1conv')
         param_key_g = "params"               
-    elif model == "Swin2SR_ClassicalSR_X4_64":
+    elif model_name == "Swin2SR_ClassicalSR_X4_64":
         model = net(upscale=4, in_chans=3, img_size=64, window_size=8,
                             img_range=1., depths=[6, 6, 6, 6, 6, 6], embed_dim=180, num_heads=[6, 6, 6, 6, 6, 6],
                             mlp_ratio=2, upsampler='pixelshuffle', resi_connection='1conv')
         param_key_g = "params"               
-    elif model in ["Swin2SR_CompressedSR_X4_48", "Swin2SR_CompressedSR_X4_DIV2K_Test", "Swin2SR_CompressedSR_X4_DIV2K_Valid"]:
+    elif model_name in ["Swin2SR_CompressedSR_X4_48", "Swin2SR_CompressedSR_X4_DIV2K_Test", "Swin2SR_CompressedSR_X4_DIV2K_Valid"]:
         # scale = 4, img_size = 48
         model = net(upscale=4, in_chans=3, img_size=48, window_size=8,
                     img_range=1., depths=[6, 6, 6, 6, 6, 6], embed_dim=180, num_heads=[6, 6, 6, 6, 6, 6],
                     mlp_ratio=2, upsampler='pixelshuffle_aux', resi_connection='1conv')
         param_key_g = 'params'   
-    elif model == "Swin2SR_Jpeg_dynamic":
+    elif model_name == "Swin2SR_Jpeg_dynamic":
         model = net(upscale=1, in_chans=1, img_size=126, window_size=7,
                     img_range=255., depths=[6, 6, 6, 6, 6, 6], embed_dim=180, num_heads=[6, 6, 6, 6, 6, 6],
                     mlp_ratio=2, upsampler='', resi_connection='1conv')
         param_key_g = 'params'
-    elif model == "Swin2SR_Lightweight_X2_64"
+    elif model_name == "Swin2SR_Lightweight_X2_64":
         # scale = 2, img_size = 64
         model = net(upscale=2, in_chans=3, img_size=64, window_size=8,
                     img_range=1., depths=[6, 6, 6, 6], embed_dim=60, num_heads=[6, 6, 6, 6],
                     mlp_ratio=2, upsampler='pixelshuffledirect', resi_connection='1conv')
         param_key_g = 'params'   
-    elif model in ["Swin2SR_RealworldSR_X4_64_BSRGAN_PSNR", "Swin2SR_RealworldSR_X4_RealSRSet"]:
+    elif model_name in ["Swin2SR_RealworldSR_X4_64_BSRGAN_PSNR", "Swin2SR_RealworldSR_X4_RealSRSet"]:
         # scale = 4
         model = net(upscale=4, in_chans=3, img_size=64, window_size=8,
                         img_range=1., depths=[6, 6, 6, 6, 6, 6], embed_dim=180, num_heads=[6, 6, 6, 6, 6, 6],
